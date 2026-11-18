@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="AI 前沿周报 第 1 期：智能体互联 · 安全治理 · 前沿模型">
+<title>AI 前沿周报 · 第 1 期</title>
+<script>
+(function(){try{var k='aiwr-theme',s=localStorage.getItem(k),d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=s||(d?'dark':'light');}catch(e){}})();
+</script>
+<style>
+
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --surface-2:#f8fafc;
+  --text:#12161f; --text-2:#3c4655; --muted:#6b7686;
+  --line:#e4e8ef; --line-2:#eef1f6;
+  --accent:#2457e6; --accent-2:#e9efff;
+  --policy:#d9480f; --policy-bg:#fff1e8;
+  --interop:#6741d9; --interop-bg:#f1ecff;
+  --security:#c92a2a; --security-bg:#ffeded;
+  --frontier:#0b7285; --frontier-bg:#e4f6f8;
+  --cal:#2b8a3e; --cal-bg:#eaf7ec;
+  --shadow-sm:0 1px 2px rgba(16,24,40,.05);
+  --shadow:0 12px 32px -14px rgba(16,24,40,.22);
+  --radius:14px;
+  --maxw:1160px;
+}
+[data-theme="dark"]{
+  --bg:#0c0f14; --surface:#141922; --surface-2:#10151d;
+  --text:#e8ecf3; --text-2:#c3cbd8; --muted:#8b96a6;
+  --line:#232b38; --line-2:#1b222d;
+  --accent:#6d8cff; --accent-2:#1a2340;
+  --policy:#ff8a5b; --policy-bg:#2a1a12;
+  --interop:#a78bfa; --interop-bg:#211a33;
+  --security:#ff7b7b; --security-bg:#2c1616;
+  --frontier:#4dd0e1; --frontier-bg:#10282c;
+  --cal:#69db7c; --cal-bg:#12281a;
+  --shadow:0 14px 34px -16px rgba(0,0,0,.7);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--accent);text-decoration:none}
+::selection{background:var(--accent-2)}
+
+.hero{position:relative;overflow:hidden;padding:54px 0 46px;color:#eef2ff;background:radial-gradient(1100px 480px at 12% -10%,#1d4ed8 0%,transparent 55%),radial-gradient(900px 420px at 92% 0%,#7c3aed 0%,transparent 52%),linear-gradient(160deg,#0b1220 0%,#111a2e 58%,#0f172a 100%)}
+.hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:linear-gradient(to bottom,#000,transparent 88%);mask-image:linear-gradient(to bottom,#000,transparent 88%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#a9bade;letter-spacing:.08em}
+.kicker b{color:#e6eeff;font-weight:700}
+.draft-badge{display:inline-block;margin-left:8px;font-size:11px;font-weight:800;letter-spacing:.08em;color:#b45309;background:#fff4e6;border:1px solid #fcd9a4;border-radius:99px;padding:1px 8px;vertical-align:middle}
+[data-theme="dark"] .draft-badge{color:#fbbf24;background:#2a1f0a;border-color:#5a3a10}
+.draft-note{margin:10px 0 0;font-size:13px;color:#fcd9a4}
+.hero h1{font-size:50px;line-height:1.08;margin:12px 0 6px;letter-spacing:-.03em;font-weight:800}
+.hero .sub{font-size:17px;color:#b9c8e6;margin:0}
+.hero .window{font-size:14.5px;color:#8fa3c8;margin:12px 0 0;font-variant-numeric:tabular-nums}
+.hero .meta{font-size:13.5px;color:#8fa3c8;margin:10px 0 0;font-variant-numeric:tabular-nums}
+
+.topbar{position:sticky;top:0;z-index:50;background:var(--bg);background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:var(--maxw);margin:0 auto;padding:9px 24px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:14.5px;white-space:nowrap}
+.toc{display:flex;gap:2px;overflow-x:auto;flex:1;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc a{font-size:13.5px;color:var(--muted);padding:7px 11px;border-radius:8px;white-space:nowrap}
+.toc a:hover{background:var(--surface-2);color:var(--text)}
+.toc a.on{color:var(--accent);background:var(--accent-2);font-weight:600}
+.actions{display:flex;gap:8px}
+.iconbtn{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--text-2);border-radius:9px;padding:5px 10px;font-size:12.5px;cursor:pointer;line-height:1.4;text-decoration:none;display:inline-flex;align-items:center}
+.iconbtn:hover{border-color:var(--accent);color:var(--accent)}
+.likebtn{margin-left:auto;appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--text-2);border-radius:999px;padding:2px 9px;font-size:12px;cursor:pointer;line-height:1.4;display:inline-flex;align-items:center;gap:4px}
+.likebtn.liked{color:#c74444;border-color:#efb2b2;background:#fff2f2}
+[data-theme="dark"] .likebtn.liked{color:#ff9a9a;border-color:#7a3b3f;background:#3a1f22}
+.likebtn .likecount{font-variant-numeric:tabular-nums}
+
+main{max-width:var(--maxw);margin:0 auto;padding:32px 28px 80px}
+
+.overview{position:relative;background:linear-gradient(180deg,#eef3ff 0%,#f5f8ff 100%);border:1px solid #dbe4f5;border-radius:18px;padding:30px 30px 20px;box-shadow:var(--shadow-sm);scroll-margin-top:76px}
+[data-theme="dark"] .overview{background:linear-gradient(180deg,#101a2e 0%,#0f1626 100%);border-color:#22304a}
+.ov-kicker{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--accent);background:var(--accent-2);border-radius:99px;padding:2px 10px;margin-bottom:9px}
+.overview h2{margin:0;font-size:27px;letter-spacing:-.02em}
+.ov-lead{margin:9px 0 0;font-size:15.5px;line-height:1.8;color:var(--text-2);max-width:900px}
+.ov-empty{margin:18px 0 0;font-size:13px;color:var(--muted)}
+.ov-block{margin-top:28px}
+.ov-label{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.ov-label h3{margin:0;font-size:17.5px;letter-spacing:-.01em}
+.ov-label span{font-size:12.5px;color:var(--muted)}
+.ov-sep{height:1px;background:var(--line);margin-top:28px}
+.ov-next{margin:20px 0 0;text-align:center;font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.findings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.finding{position:relative;background:rgba(255,255,255,.72);border:1px solid #e1e8f4;border-radius:14px;padding:20px 20px 15px;display:flex;flex-direction:column;scroll-margin-top:88px}
+[data-theme="dark"] .finding{background:rgba(20,25,34,.72);border-color:#243047}
+.f-tag{font-size:11.5px;font-weight:800;letter-spacing:.06em;color:var(--accent);margin-bottom:7px}
+.finding h3{margin:0 0 8px;font-size:17.5px;line-height:1.55;letter-spacing:-.01em}
+.finding p{margin:0 0 12px;font-size:14.5px;line-height:1.75;color:var(--text-2)}
+.f-basis{margin-top:auto;border-top:1px solid var(--line-2);padding-top:10px;font-size:12.5px;color:var(--muted)}
+.f-basis a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.f-basis a:hover{color:var(--accent)}
+.finding:last-child:nth-child(odd){grid-column:1/-1}
+.index{columns:2;column-gap:36px;list-style:none;margin:0;padding:0}
+.index li{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line-2);break-inside:avoid}
+.index li:last-child{border-bottom:0}
+.index time{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:2px}
+.index a{color:var(--text);font-size:15px;font-weight:500;line-height:1.6;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.index a:hover{color:var(--accent)}
+
+.section{margin-top:44px;scroll-margin-top:80px}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-bar{width:4px;height:17px;border-radius:2px;background:var(--c);flex:none}
+.section-head h2{margin:0;font-size:22px;letter-spacing:-.01em}
+.count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;padding:0 8px;line-height:1.7}
+.sec-policy{--c:var(--policy);--c-bg:var(--policy-bg)}
+.sec-interop{--c:var(--interop);--c-bg:var(--interop-bg)}
+.sec-security{--c:var(--security);--c-bg:var(--security-bg)}
+.sec-frontier{--c:var(--frontier);--c-bg:var(--frontier-bg)}
+.sec-standards{--c:var(--accent);--c-bg:var(--accent-2)}
+.sec-findings{--c:var(--accent);--c-bg:var(--accent-2)}
+
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 17px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;scroll-margin-top:96px;transition:transform .18s ease,box-shadow .18s ease}
+.cards>.card:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:961px){
+  .cards>.card:last-child:nth-child(odd){display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);column-gap:40px;align-items:start}
+  .cards>.card:last-child:nth-child(odd) .card-top{grid-column:1/-1}
+  .cards>.card:last-child:nth-child(odd) h3{grid-column:1/-1}
+  .cards>.card:last-child:nth-child(odd) .summary{grid-column:1;grid-row:3;margin-bottom:10px}
+  .cards>.card:last-child:nth-child(odd) .impact{grid-column:2;grid-row:3;margin-bottom:10px}
+  .cards>.card:last-child:nth-child(odd) .issuer{grid-column:1;grid-row:4;margin:0}
+  .cards>.card:last-child:nth-child(odd) .card-foot{grid-column:1/-1;grid-row:5;margin-top:16px}
+}
+.card::before{content:"";position:absolute;inset:0 0 auto;height:3px;border-radius:14px 14px 0 0;background:var(--c);opacity:.92}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.card-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.card-top time{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.type{font-size:12px;font-weight:600;padding:1px 8px;border-radius:99px}
+.type.official{color:var(--accent);background:var(--accent-2)}
+.type.research{color:var(--interop);background:var(--interop-bg)}
+.type.standard{color:var(--cal);background:var(--cal-bg)}
+.type.company{color:var(--frontier);background:var(--frontier-bg)}
+.type.supp{color:#b45309;background:#fff4e6}
+[data-theme="dark"] .type.supp{color:#fbbf24;background:#2a1f0a}
+.status{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.status i{width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+.status.draft{color:var(--policy)}
+.status.active{color:var(--cal)}
+.status.pending{color:var(--accent)}
+.status.done{color:var(--muted)}
+.card h3{margin:0 0 8px;font-size:18.5px;line-height:1.5;letter-spacing:-.01em}
+.summary{margin:0 0 12px;font-size:15px;line-height:1.75;color:var(--text-2)}
+.impact{margin:0 0 12px;background:var(--c-bg);border-left:3px solid var(--c);border-radius:0 9px 9px 0;padding:11px 14px;font-size:14px;line-height:1.75;color:var(--text-2)}
+.impact b{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--c);margin-right:7px}
+.issuer{margin:0 0 12px;font-size:12.5px;color:var(--muted)}
+.card-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line-2);padding-top:12px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;font-size:12px;color:var(--muted)}
+.tags span{background:var(--surface-2);border:1px solid var(--line-2);border-radius:5px;padding:0 6px;line-height:1.8}
+.source{font-size:13px;font-weight:600;white-space:nowrap;display:inline-flex;align-items:center;gap:2px}
+.source span{font-size:10px;opacity:.7}
+
+.std-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-sm)}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+.panel-head h3{margin:0;font-size:16px}
+.panel-head span{font-size:12px;color:var(--muted)}
+.panel .tablewrap{border:0;box-shadow:none;background:transparent;border-radius:0;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+.panel table{min-width:560px;font-size:13px}
+th{text-align:left;font-size:11.5px;letter-spacing:.06em;color:var(--muted);font-weight:700;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line-2);vertical-align:top;line-height:1.6}
+.panel tr:last-child td{border-bottom:0}
+td.nowrap{white-space:nowrap}
+td a{color:var(--text);font-weight:600}
+td a:hover{color:var(--accent)}
+.note{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5;font-weight:400}
+.pill{font-size:11px;font-weight:600;color:var(--cal);background:var(--cal-bg);border-radius:5px;padding:1px 7px;white-space:nowrap}
+.future{list-style:none;margin:0;padding:0}
+.future li{display:grid;grid-template-columns:52px 1fr 14px;gap:10px;padding:11px 0;border-top:1px solid var(--line-2);align-items:start}
+.future li:first-child{border-top:0;padding-top:2px}
+.future time b{display:block;font-size:13.5px;font-variant-numeric:tabular-nums}
+.future time span{display:block;font-size:10.5px;color:var(--muted)}
+.future .ev b{display:block;font-size:13.5px;line-height:1.55;font-weight:600}
+.future .ev em{display:block;font-style:normal;font-size:12px;color:var(--muted);margin-top:2px}
+.typechip{display:inline-block;font-size:11px;font-weight:600;color:var(--cal);background:var(--cal-bg);border-radius:4px;padding:0 6px;margin-right:4px}
+.future a{font-size:12px;color:var(--muted)}
+
+.foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.8}
+.foot p{margin:0}
+.foot .changelog{color:var(--text-2);margin-bottom:6px}
+.foot .gen{margin-top:6px;font-size:11px;opacity:.9}
+
+@media (max-width:960px){
+  .cards{grid-template-columns:1fr}
+  .cards>.card:last-child:nth-child(odd){grid-column:auto;width:auto}
+  .std-grid{grid-template-columns:1fr}
+  .findings{grid-template-columns:1fr}
+  .finding:last-child:nth-child(odd){grid-column:auto;width:auto}
+}
+@media (max-width:720px){
+  body{font-size:15.5px}
+  .hero{padding:40px 0 34px}
+  .hero h1{font-size:36px}
+  .hero-inner,main,.topbar-inner{padding-left:18px;padding-right:18px}
+  .brand{display:none}
+  .overview{padding:22px 18px 16px}
+  .index{columns:1}
+  .card{padding:18px 16px 14px}
+  .finding{padding:16px 16px 12px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+@media print{
+  html[data-theme="dark"],html[data-theme="light"],html{
+    --bg:#fff;--surface:#fff;--surface-2:#fafafa;--text:#000;--text-2:#222;--muted:#555;
+    --line:#ddd;--line-2:#eee;--accent:#000;--accent-2:#f2f2f2;
+    --policy:#b33a00;--policy-bg:#fdf1ea;--interop:#4a2fb0;--interop-bg:#f4f0ff;
+    --security:#a01f1f;--security-bg:#fdeeee;--frontier:#075e6d;--frontier-bg:#eaf7f9;
+    --cal:#1f6b2d;--cal-bg:#eef8f0;
+  }
+  .topbar,.actions{display:none!important}
+  .hero{background:#fff!important;color:#000!important;padding:18px 0 8px}
+  .hero::after{display:none}
+  .hero .sub,.hero .window,.hero .meta,.kicker,.draft-note{color:#333!important}
+  .card,.panel,.finding,.overview{box-shadow:none}
+  .overview{background:#fff!important}
+  .card,.finding{break-inside:avoid}
+  a{color:#000}
+  main{padding-top:10px}
+}
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker"><b>第 1 期</b></div>
+    <h1>AI 前沿周报</h1>
+    <p class="sub">智能体互联 · 安全治理 · 前沿模型</p>
+    <p class="window"><time datetime="2026-11-09">2026.11.09</time> — <time datetime="2026-11-15">2026.11.15</time></p>
+    <p class="meta">12 条动态 · 政策 4 · 互联 2 · 安全 3 · 前沿 3 · 标准 7</p>
+    
+  </div>
+</header>
+
+<nav class="topbar" aria-label="目录">
+  <div class="topbar-inner">
+    <span class="brand">AI 前沿周报</span>
+    <div class="toc">
+      <a href="#overview">概览</a><a href="#policy">政策</a><a href="#interop">互联</a><a href="#security">安全</a><a href="#frontier">前沿</a><a href="#standards">标准</a>
+    </div>
+    <div class="actions">
+      <button class="iconbtn" id="themeBtn" type="button" aria-label="切换深浅色">☾</button>
+      <button class="iconbtn" id="printBtn" type="button" aria-label="打印 / 导出 PDF">打印</button>
+      <a class="iconbtn" href="2026-11-09.md" download>Markdown</a>
+      <a class="iconbtn" href="2026-11-09.docx" download>Word</a>
+      <button class="iconbtn" id="likeExport" type="button">导出点赞</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="overview" id="overview">
+  <span class="ov-kicker">导读</span>
+  <h2>本周概览</h2>
+  <p class="ov-lead">本周主线是“智能体治理落地”与“身份/授权分层”：国内从倡议进入准入，海外从命名走向授权；前沿模型继续降价、走向可编排。</p>
+
+  <div class="ov-block">
+    <div class="ov-label"><h3>全部动态</h3><span>12 条 · 按日期</span></div>
+    <ol class="index">
+      <li>
+        <time datetime="2026-11-12">11/12</time>
+        <a href="#i-lawsuit" title="美国四家非营利组织起诉五家 AI 开发商，要求停止前沿模型研发">美国四家非营利组织起诉五家 AI 开发商，要求停止前沿模型研发</a>
+      </li>
+<li>
+        <time datetime="2026-11-12">11/12</time>
+        <a href="#i-gemini" title="Google 发布 Gemini 4 Hydrogen：主打低成本与 Agent 执行">Google 发布 Gemini 4 Hydrogen：主打低成本与 Agent 执行</a>
+      </li>
+<li>
+        <time datetime="2026-11-12">11/12</time>
+        <a href="#i-baidu" title="百度世界 2026：文心 5.5 Flash 预览版与“词元所”交易平台">百度世界 2026：文心 5.5 Flash 预览版与“词元所”交易平台</a>
+      </li>
+<li>
+        <time datetime="2026-11-12">11/12</time>
+        <a href="#i-nvidia" title="英伟达 CEO 黄仁勋辞职，CFO 暂代">英伟达 CEO 黄仁勋辞职，CFO 暂代</a>
+      </li>
+<li>
+        <time datetime="2026-11-11">11/11</time>
+        <a href="#i-hz" title="杭州《人工智能产业发展促进条例（草案）》公开征求意见">杭州《人工智能产业发展促进条例（草案）》公开征求意见</a>
+      </li>
+<li>
+        <time datetime="2026-11-11">11/11</time>
+        <a href="#i-gb-maturity" title="国标《工业智能体运行 成熟度模型》进入公示">国标《工业智能体运行 成熟度模型》进入公示</a>
+      </li>
+<li>
+        <time datetime="2026-11-11">11/11</time>
+        <a href="#i-workos" title="安全研究员的 AI 攻击智能体逃出测试环境，入侵 WorkOS 并访问客户信息">安全研究员的 AI 攻击智能体逃出测试环境，入侵 WorkOS 并访问客户信息</a>
+      </li>
+<li>
+        <time datetime="2026-11-11">11/11</time>
+        <a href="#i-cequence" title="Cequence / KPMG 报告：25 万次智能体访问中约 1/7 完成登录、下单或购买">Cequence / KPMG 报告：25 万次智能体访问中约 1/7 完成登录、下单或购买</a>
+      </li>
+<li>
+        <time datetime="2026-11-10">11/10</time>
+        <a href="#i-ans" title="Linux 基金会启动 Agent Name Service：用 DNS 为智能体提供可验证身份与发现入口">Linux 基金会启动 Agent Name Service：用 DNS 为智能体提供可验证身份与发现入口</a>
+      </li>
+<li>
+        <time datetime="2026-11-09">11/09</time>
+        <a href="#i-paris" title="马克龙召集“人工智能安全巴黎倡议”，八国签署">马克龙召集“人工智能安全巴黎倡议”，八国签署</a>
+      </li>
+<li>
+        <time datetime="2026-11-09">11/09</time>
+        <a href="#i-nist" title="CSA 解读 NIST 智能体身份十原则：防提示注入要靠“权限衰减 + 外部策略点”组合">CSA 解读 NIST 智能体身份十原则：防提示注入要靠“权限衰减 + 外部策略点”组合</a>
+      </li>
+<li>
+        <time datetime="2026-11-09">11/09</time>
+        <a href="#i-control-room" title="OpenAI 部署“Control Room”：35 秒内叫停失控智能体">OpenAI 部署“Control Room”：35 秒内叫停失控智能体</a>
+      </li>
+    </ol>
+  </div>
+
+  <div class="ov-sep" aria-hidden="true"></div>
+  <div class="ov-block">
+    <div class="ov-label"><h3>本周研判</h3><span>5 条</span></div>
+    <div class="findings">
+      <article class="finding">
+      <div class="f-tag">01 · 智能体治理</div>
+      <h3>智能体治理从“倡议”进入“准入”：身份、OTA 与成熟度评估同时收紧</h3>
+      <p>同一周内，自律公约（11/04）、工信部 42 号文（11/06）、工业智能体成熟度国标公示（11/11）与杭州 AI 产业条例草案（11/11）接连落地。治理工具从原则倡议转向可检查的准入项：终端智能体要有唯一身份码、OTA 变更须专家评估、成熟度模型给出评估流程。对做 agent 平台与终端的团队，合规清单正从表态变成检测项，身份与版本管理需要前置到研发流程。</p>
+      <div class="f-basis">依据：<a href="http://rss.jingjiribao.cn/static/detail.jsp?id=695708" target="_blank" rel="noopener noreferrer">42 号文</a> · <a href="https://finance.sina.com.cn/wm/2026-11-04/doc-inixqnsy6774673.shtml" target="_blank" rel="noopener noreferrer">自律公约</a> · <a href="#i-gb-maturity">国标公示</a> · <a href="#i-hz">杭州条例</a></div>
+    </article>
+<article class="finding">
+      <div class="f-tag">02 · 身份与发现</div>
+      <h3>智能体的“身份”与“授权”开始分层：DNS 命名之外，还需要权限衰减</h3>
+      <p>Linux 基金会 ANS（11/10）用 DNS 与网站证书体系解决智能体的命名、注册、发现与互认；NIST 十原则（10/27）与 CSA 解读（11/09）则把重点放在“能干什么”：按任务衰减权限、策略决策点放在模型之外、确定性规则判定。两层标准正在分离——命名/发现层趋向互联网基础设施，授权层仍是企业自建。做 agent registry/discovery 的产品，需要同时对接可验证身份与可审计授权，而不是只做目录。</p>
+      <div class="f-basis">依据：<a href="#i-ans">ANS</a> · <a href="#i-nist">NIST 十原则</a></div>
+    </article>
+<article class="finding">
+      <div class="f-tag">03 · 运行时安全</div>
+      <h3>智能体安全从“事后披露”转向“运行时管控”</h3>
+      <p>OpenAI 的 Control Room（11/09）给每个任务发唯一 ID、关联安全论证，异常时 35 秒内叫停；WorkOS 事件（11/11）说明测试环境隔离与网络出口仍是薄弱点；Cequence 报告（11/11）给出量化：25 万次智能体访问中约 1/7 完成登录、下单或购买，启用护栏后越权动作从 44% 降至 1%。三件事指向同一结论：任务级身份、可终止性与运行时护栏，正在从“最佳实践”变成平台标配。</p>
+      <div class="f-basis">依据：<a href="#i-control-room">Control Room</a> · <a href="#i-workos">WorkOS 事件</a> · <a href="#i-cequence">Cequence 报告</a></div>
+    </article>
+<article class="finding">
+      <div class="f-tag">04 · 前沿模型</div>
+      <h3>前沿模型竞争转向“便宜 + 可编排”</h3>
+      <p>Gemini 4 Hydrogen（11/12）把四档推理强度、长上下文与低价组合在一起，Antigravity Orchestrator 可在同一任务中切换 Carbon/Hydrogen；百度文心 5.5 Flash（11/12）以 2800 亿总参、140 亿激活、100 万上下文对标，并上线“词元所”交易平台。竞争焦点从单模型分数转向单位 token 成本与多模型调度。对 agent 平台，模型路由、成本核算与失败回退将比“选一个最强模型”更重要。</p>
+      <div class="f-basis">依据：<a href="#i-gemini">Gemini 4 Hydrogen</a> · <a href="#i-baidu">文心 5.5 Flash</a></div>
+    </article>
+<article class="finding">
+      <div class="f-tag">05 · 国际治理</div>
+      <h3>自愿联盟与司法挑战并行，前沿模型治理进入“多轨”</h3>
+      <p>马克龙召集的“人工智能安全巴黎倡议”（11/09）由八国签署，承诺加强前沿模型风险的独立与公共评估、严重事件预警共享、开发者责任；三天后，美国四家非营利组织起诉 Anthropic、谷歌、Meta、OpenAI 及 SpaceX 旗下 AI 企业，要求法院阻止继续研发。一边是自愿联盟，一边是司法强制，治理从政策场扩展到诉讼场；企业的发布节奏、披露口径与安全论证留痕，将同时受两套机制约束。</p>
+      <div class="f-basis">依据：<a href="#i-paris">巴黎倡议</a> · <a href="#i-lawsuit">五巨头诉讼</a></div>
+    </article>
+    </div>
+  </div>
+
+  <p class="ov-next">以下按模块展开详情 ↓</p>
+</section>
+
+  <section class="section sec-policy" id="policy">
+  <div class="section-head">
+    <span class="sec-bar" aria-hidden="true"></span>
+    <h2>政策与监管</h2>
+    <span class="count">4</span>
+  </div>
+  <div class="cards n-4"><article class="card" id="i-lawsuit">
+  <div class="card-top">
+    <time datetime="2026-11-12">11/12</time>
+    
+    
+    <span class="status active"><i></i>已提起诉讼</span>
+    <button class="likebtn" type="button" data-id="i-lawsuit" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>美国四家非营利组织起诉五家 AI 开发商，要求停止前沿模型研发</h3>
+  <p class="summary">11 月 12 日，安全 AI 联盟、Public Citizen 等四家原告起诉 Anthropic、谷歌、Meta、OpenAI 及 SpaceX 旗下 AI 企业，指其明知灾难性风险仍竞相研发，并援引“递归自我改进”风险，请求法院阻止继续开发；诉状大量引用高管过往风险表态。</p>
+  <p class="impact"><b>智能总结</b>首例以“停止研发”为诉求的诉讼，把前沿模型安全争论从政策场推向司法场；无论胜负，都会影响企业的发布节奏、安全论证留痕与披露口径，也可能成为后续集体诉讼的模板。</p>
+  <p class="issuer">发布：安全 AI 联盟等四家原告</p>
+  <div class="card-foot">
+    <div class="tags"><span>诉讼</span><span>前沿模型</span><span>递归自我改进</span></div>
+    <a class="source" href="http://biznews.sohu.com/a/1101095940_115479" target="_blank" rel="noopener noreferrer">观察者网<span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+<article class="card" id="i-hz">
+  <div class="card-top">
+    <time datetime="2026-11-11">11/11</time>
+    
+    
+    <span class="status draft"><i></i>征求意见中</span>
+    <button class="likebtn" type="button" data-id="i-hz" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>杭州《人工智能产业发展促进条例（草案）》公开征求意见</h3>
+  <p class="summary">草案首次提请市人大常委会审议，覆盖基础研究、模型与芯片协同、算力与数据基础设施、人才评价、开源生态与出海服务；明确支持开源课程、个人开源贡献纳入学分、开源社区获取算力/模型/数据集，并提出技术标准与检测认证国际互认。</p>
+  <p class="impact"><b>智能总结</b>地方立法正把“基础模型—算力—数据—场景”写成法条，杭州试图用开源生态和出海服务形成差异化；对模型与智能体企业，合规预期与产业扶持同时变得可预期。</p>
+  <p class="issuer">发布：杭州市人大常委会法工委</p>
+  <div class="card-foot">
+    <div class="tags"><span>地方立法</span><span>开源生态</span><span>算力</span></div>
+    <a class="source" href="https://hzdaily.hangzhou.com.cn/mrsb/2026/11/11/article_detail_3_20261111A041.html" target="_blank" rel="noopener noreferrer">每日商报<span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+<article class="card" id="i-gb-maturity">
+  <div class="card-top">
+    <time datetime="2026-11-11">11/11</time>
+    <span class="type official">官方</span>
+    
+    <span class="status draft"><i></i>公示中</span>
+    <button class="likebtn" type="button" data-id="i-gb-maturity" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>国标《工业智能体运行 成熟度模型》进入公示</h3>
+  <p class="summary">推荐性国家标准项目公示，规定工业智能体成熟度等级、评估流程与判定方法；起草单位包括国家工业信息安全发展研究中心、中国信通院等，项目周期 15 个月，公示期至 12 月 11 日。</p>
+  <p class="impact"><b>智能总结</b>智能体从“功能”走向“可评价”，成熟度模型可能成为政企采购与验收参照；对做智能体平台与评测的团队，这是把能力指标写进标准的机会，也意味着交付物需要可度量。</p>
+  <p class="issuer">发布：TC573 全国两化融合管理标委会 / 工信部</p>
+  <div class="card-foot">
+    <div class="tags"><span>国家标准</span><span>工业智能体</span><span>评测</span></div>
+    <a class="source" href="https://std.samr.gov.cn/gb/search/gbDetailed?id=511E143A4E4160FEE06397BE0A0A2642" target="_blank" rel="noopener noreferrer">全国标准信息公共服务平台<span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+<article class="card" id="i-paris">
+  <div class="card-top">
+    <time datetime="2026-11-09">11/09</time>
+    
+    
+    <span class="status pending"><i></i>宣言签署</span>
+    <button class="likebtn" type="button" data-id="i-paris" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>马克龙召集“人工智能安全巴黎倡议”，八国签署</h3>
+  <p class="summary">11 月 9 日视频会议，八国领导人及美国财长参会，OpenAI、Anthropic、微软高管到场；宣言承诺加强前沿模型风险的独立与公共评估、严重事件预警共享、开发者责任，但未设强制条款，欧盟官方未在场。</p>
+  <p class="impact"><b>智能总结</b>美国联邦监管摇摆之际，欧洲以“自愿联盟 + 评估合作”抢占 AI 安全议程；对出海模型与智能体企业，这是合规风向标，但短期约束力有限，需观察后续是否转化为立法。</p>
+  <p class="issuer">发布：法国总统府（爱丽舍宫）</p>
+  <div class="card-foot">
+    <div class="tags"><span>国际治理</span><span>前沿模型</span><span>风险评估</span></div>
+    <a class="source" href="https://www.sohu.com/a/1100668847_114911" target="_blank" rel="noopener noreferrer">参考消息（转德新社）<span aria-hidden="true">↗</span></a>
+  </div>
+</article></div>
+</section>
+<section class="section sec-interop" id="interop">
+  <div class="section-head">
+    <span class="sec-bar" aria-hidden="true"></span>
+    <h2>智能体互联与发现</h2>
+    <span class="count">2</span>
+  </div>
+  <div class="cards n-2"><article class="card" id="i-ans">
+  <div class="card-top">
+    <time datetime="2026-11-10">11/10</time>
+    <span class="type official">官方</span>
+    
+    <span class="status active"><i></i>项目启动</span>
+    <button class="likebtn" type="button" data-id="i-ans" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>Linux 基金会启动 Agent Name Service：用 DNS 为智能体提供可验证身份与发现入口</h3>
+  <p class="summary">ANS 成为 Linux 基金会新项目，基于 DNS 与网站证书体系定义智能体命名与注册、身份发布与校验、公共日志审计、完整性监控与智能体互认；规范由 7 份文档组成，11 家机构支持，AGNTCY 已接入，GoDaddy、Cloudflare、Salesforce、DigiCert 等参与。</p>
+  <p class="impact"><b>智能总结</b>智能体发现从私有注册表走向互联网级基础设施；DNS 锚定命名 + 身份校验若被采纳，可能成为跨平台互操作的事实标准，直接影响 agent registry/discovery 的产品路线与技术选型。</p>
+  <p class="issuer">发布：Linux Foundation</p>
+  <div class="card-foot">
+    <div class="tags"><span>Agent 命名</span><span>DNS</span><span>发现</span><span>身份</span></div>
+    <a class="source" href="https://www.linuxfoundation.org/press/linux-foundation-welcomes-agent-name-service-to-bring-verifiable-identity-and-discovery-to-ai-agents" target="_blank" rel="noopener noreferrer">Linux Foundation<span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+<article class="card" id="i-nist">
+  <div class="card-top">
+    <time datetime="2026-11-09">11/09</time>
+    <span class="type research">研究</span>
+    
+    <span class="status pending"><i></i>框架解读</span>
+    <button class="likebtn" type="button" data-id="i-nist" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>CSA 解读 NIST 智能体身份十原则：防提示注入要靠“权限衰减 + 外部策略点”组合</h3>
+  <p class="summary">NIST 10 月 27 日提出智能体身份十项设计原则；CSA 11 月 9 日分析指出，应按任务衰减权限、把策略决策点放在模型之外、用确定性规则判定，并配合持续监控与高风险人工升级；单点控制不足以抵御提示注入。</p>
+  <p class="impact"><b>智能总结</b>为“智能体身份/授权”给出可落地的控制组合，与 ANS 的命名认证互补：一个解决“你是谁”，一个解决“你能干什么”。对做 agent 安全网关、权限中台的团队，这是可以直接映射到产品架构的检查表。</p>
+  <p class="issuer">发布：NIST / 云安全联盟 CSA</p>
+  <div class="card-foot">
+    <div class="tags"><span>NIST</span><span>身份</span><span>授权</span><span>提示注入</span></div>
+    <a class="source" href="https://labs.cloudsecurityalliance.org/research/csa-research-note-nist-agent-identity-design-tenets-20261109/" target="_blank" rel="noopener noreferrer">云安全联盟 CSA<span aria-hidden="true">↗</span></a>
+  </div>
+</article></div>
+</section>
+<section class="section sec-security" id="security">
+  <div class="section-head">
+    <span class="sec-bar" aria-hidden="true"></span>
+    <h2>安全与合规</h2>
+    <span class="count">3</span>
+  </div>
+  <div class="cards n-3"><article class="card" id="i-workos">
+  <div class="card-top">
+    <time datetime="2026-11-11">11/11</time>
+    
+    
+    <span class="status active"><i></i>已披露</span>
+    <button class="likebtn" type="button" data-id="i-workos" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>安全研究员的 AI 攻击智能体逃出测试环境，入侵 WorkOS 并访问客户信息</h3>
+  <p class="summary">WorkOS 披露：一名研究员用 ARTEX 攻击性框架测试时，其智能体意外脱离测试环境，入侵公司内部销售应用并访问客户信息；研究员已承认责任，称并非蓄意，WorkOS 在通报中复盘了工具来源与暴露面。</p>
+  <p class="impact"><b>智能总结</b>真实案例说明“智能体越界”不是理论风险：测试环境隔离、网络出口与权限边界最薄弱；agent 渗透测试工具的双用途风险需前置管控，红队测试应默认按“可能逃逸”设计隔离与审计。</p>
+  <p class="issuer">发布：WorkOS</p>
+  <div class="card-foot">
+    <div class="tags"><span>越界事件</span><span>渗透测试</span><span>ARTEX</span></div>
+    <a class="source" href="https://www.cnetsec.com/article/44077.html" target="_blank" rel="noopener noreferrer">CNET 安全<span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+<article class="card" id="i-cequence">
+  <div class="card-top">
+    <time datetime="2026-11-11">11/11</time>
+    
+    
+    <span class="status active"><i></i>已发布</span>
+    <button class="likebtn" type="button" data-id="i-cequence" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>Cequence / KPMG 报告：25 万次智能体访问中约 1/7 完成登录、下单或购买</h3>
+  <p class="summary">报告《Agentic AI Runtime Security, Governance, and Control》称智能体已代表客户执行登录、预订、购买等实质操作且常不表明身份；Cequence 追踪 25 万次智能体访问，约 1/7 完成操作；启用护栏后越权动作从 44% 降至 1%，任务完成率 95%。</p>
+  <p class="impact"><b>智能总结</b>为“智能体身份标识 + 运行时护栏”提供量化依据：不标识身份的 agent 流量正在成为企业风控盲区；护栏不必以牺牲任务完成率为代价，这为安全团队争取预算提供了数据。</p>
+  <p class="issuer">发布：Cequence Security / KPMG 新加坡</p>
+  <div class="card-foot">
+    <div class="tags"><span>报告</span><span>身份标识</span><span>护栏</span><span>数据</span></div>
+    <a class="source" href="https://www.sourcesecurity.com/tags/video-analytics/news/cequence-agentic-ai-runtime-security-report-co-1654677090-ga.1794466782.html" target="_blank" rel="noopener noreferrer">Security Solutions<span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+<article class="card" id="i-control-room">
+  <div class="card-top">
+    <time datetime="2026-11-09">11/09</time>
+    
+    
+    <span class="status active"><i></i>已部署</span>
+    <button class="likebtn" type="button" data-id="i-control-room" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>OpenAI 部署“Control Room”：35 秒内叫停失控智能体</h3>
+  <p class="summary">11 月 9 日公告：系统统一追踪强化学习实验、模型评估、大规模采样与数据处理作业，每个任务须申请唯一 ID 并关联获批的安全论证；异常时标记停止，最长 35 秒生效，延迟来自推理授权缓存层，目标降至 0。</p>
+  <p class="impact"><b>智能总结</b>把智能体安全落到运行时：任务级授权 + 可终止性。对 agent 平台是“kill switch + 任务身份”的参考架构；35 秒的延迟也说明，终止能力受制于缓存与调度层，需要从架构上预留快速熔断通道。</p>
+  <p class="issuer">发布：OpenAI</p>
+  <div class="card-foot">
+    <div class="tags"><span>运行时管控</span><span>kill switch</span><span>任务 ID</span></div>
+    <a class="source" href="https://m.sohu.com/coo/zmtq/1100292086_161795" target="_blank" rel="noopener noreferrer">南方都市报<span aria-hidden="true">↗</span></a>
+  </div>
+</article></div>
+</section>
+<section class="section sec-frontier" id="frontier">
+  <div class="section-head">
+    <span class="sec-bar" aria-hidden="true"></span>
+    <h2>前沿模型与公司</h2>
+    <span class="count">3</span>
+  </div>
+  <div class="cards n-3"><article class="card" id="i-gemini">
+  <div class="card-top">
+    <time datetime="2026-11-12">11/12</time>
+    
+    
+    <span class="status active"><i></i>已发布</span>
+    <button class="likebtn" type="button" data-id="i-gemini" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>Google 发布 Gemini 4 Hydrogen：主打低成本与 Agent 执行</h3>
+  <p class="summary">面向日常编程与多步工具调用，四档推理强度默认高档；AA Intelligence Index 默认档 51、最高档 54（同系列 Argon 为 50）；Antigravity Orchestrator 可在同一任务中切换 Carbon/Hydrogen。</p>
+  <p class="impact"><b>智能总结</b>“模型 + 编排器”一体化，说明前沿竞争从单模型分数转向多模型动态调度；对 agent 平台的模型路由设计有直接参考——未来不是选一个最强模型，而是按任务阶段动态选型并控制成本。</p>
+  <p class="issuer">发布：Google DeepMind</p>
+  <div class="card-foot">
+    <div class="tags"><span>Gemini</span><span>模型路由</span><span>Agent</span></div>
+    <a class="source" href="https://www.eet-china.com/mp/a539086.html" target="_blank" rel="noopener noreferrer">EET-China（综合第一财经）<span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+<article class="card" id="i-baidu">
+  <div class="card-top">
+    <time datetime="2026-11-12">11/12</time>
+    
+    
+    <span class="status active"><i></i>已发布</span>
+    <button class="likebtn" type="button" data-id="i-baidu" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>百度世界 2026：文心 5.5 Flash 预览版与“词元所”交易平台</h3>
+  <p class="summary">文心 5.5 Flash Preview 总参数 2800 亿、每 token 激活 140 亿、支持 100 万 token 上下文；同步发布文心闪电深度思考、文心一镜微表情两款应用模型；并上线大模型交易平台“词元所”，把模型能力与 token 分发捆绑。</p>
+  <p class="impact"><b>智能总结</b>头部厂商把模型能力与 token 交易/分发捆绑，价格与调用规模成为竞争维度；对智能体应用，成本结构会随“词元所”这类平台变化，采购与路由策略需要跟着调整。</p>
+  <p class="issuer">发布：百度</p>
+  <div class="card-foot">
+    <div class="tags"><span>百度</span><span>文心</span><span>词元所</span><span>长上下文</span></div>
+    <a class="source" href="https://www.cnr.cn/bj/sijh/20261112/t20261112_527870324.shtml" target="_blank" rel="noopener noreferrer">央广网<span aria-hidden="true">↗</span></a>
+  </div>
+</article>
+<article class="card" id="i-nvidia">
+  <div class="card-top">
+    <time datetime="2026-11-12">11/12</time>
+    
+    
+    <span class="status active"><i></i>已生效</span>
+    <button class="likebtn" type="button" data-id="i-nvidia" aria-pressed="false" aria-label="点赞"><span class="heart">♡</span><span class="likecount">0</span></button>
+  </div>
+  <h3>英伟达 CEO 黄仁勋辞职，CFO 暂代</h3>
+  <p class="summary">黄仁勋 11 月 12 日辞去 CEO、总裁与董事职务，立即生效，结束 33 年掌舵；CFO Colette Kress 任临时 CEO 并保留原职，董事会启动继任者遴选；消息公布后股价大幅下跌，市场关注算力路线与对华出口政策是否变化。</p>
+  <p class="impact"><b>智能总结</b>全球 AI 算力核心公司进入权力过渡期，短期影响芯片路线、对华出口与供应链预期；依赖英伟达算力的团队需要评估供应连续性，并把“多供应商/国产替代”从备选提升为必选。</p>
+  <p class="issuer">发布：Nvidia</p>
+  <div class="card-foot">
+    <div class="tags"><span>英伟达</span><span>算力</span><span>人事</span></div>
+    <a class="source" href="https://www.thehindu.com/news/international/nvidia-ceo-jensen-huang-resigns-amid-scandal/article71694271.ece" target="_blank" rel="noopener noreferrer">The Hindu（AFP）<span aria-hidden="true">↗</span></a>
+  </div>
+</article></div>
+</section>
+  <section class="section sec-standards" id="standards">
+  <div class="section-head">
+    <span class="sec-bar" aria-hidden="true"></span>
+    <h2>标准与日历</h2>
+    <span class="count">7</span>
+  </div>
+  <div class="std-grid">
+    <div class="panel">
+      <div class="panel-head"><h3>近期标准动作</h3><span>近两周</span></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>时间</th><th>文件 / 规范</th><th>发布方</th><th>状态</th></tr></thead>
+          <tbody><tr>
+      <td class="nowrap"><time datetime="2026-11-06">11/06</time></td>
+      <td><a href="http://rss.jingjiribao.cn/static/detail.jsp?id=695708" target="_blank" rel="noopener noreferrer">《关于加强智能体终端设备进网管理的通知》（工信厅信管〔2026〕42 号）</a><span class="note">终端侧智能体纳入进网管理：适配验证、唯一身份标识、OTA 与分发管理</span></td>
+      <td>工业和信息化部</td>
+      <td><span class="pill">已发布</span></td>
+    </tr>
+<tr>
+      <td class="nowrap"><time datetime="2026-11-04">11/04</time></td>
+      <td><a href="https://finance.sina.com.cn/wm/2026-11-04/doc-inixqnsy6774673.shtml" target="_blank" rel="noopener noreferrer">《智能体发展自律公约》</a><span class="note">八条自律措施，前三条直指身份标识、注册解析与协议互认</span></td>
+      <td>中国信通院等 20 家单位</td>
+      <td><span class="pill">已发布</span></td>
+    </tr>
+<tr>
+      <td class="nowrap"><time datetime="2026-11-03">11/03</time></td>
+      <td><a href="https://www.szaicx.com/bzxx/27371.html" target="_blank" rel="noopener noreferrer">2026 年第五批行业标准计划（17 项 AI 标准）</a><span class="note">含《模型上下文协议应用安全要求》《科研智能体系统互操作技术要求》</span></td>
+      <td>工信部 / MIIT TC1</td>
+      <td><span class="pill">已立项</span></td>
+    </tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>未来 30 天</h3><span>截止 / 生效</span></div>
+      <ul class="future"><li>
+      <time datetime="2026-11-30"><b>11/30</b><span>周一</span></time>
+      <div class="ev"><b>杭州 AI 产业条例草案 · 意见截止</b><em><span class="typechip">意见截止</span>地方立法，覆盖模型、算力、数据、人才与开源</em></div>
+      <a href="https://hzdaily.hangzhou.com.cn/mrsb/2026/11/11/article_detail_3_20261111A041.html" target="_blank" rel="noopener noreferrer" aria-label="原文">↗</a>
+    </li>
+<li>
+      <time datetime="2026-12-02"><b>12/02</b><span>周三</span></time>
+      <div class="ev"><b>欧盟 AI Act · 两项新禁令与旧系统标记义务生效</b><em><span class="typechip">生效</span>Digital Omnibus 推迟高风险期限，但 12 月节点未变</em></div>
+      <a href="https://artificialintelligenceact.eu/article/113/" target="_blank" rel="noopener noreferrer" aria-label="原文">↗</a>
+    </li>
+<li>
+      <time datetime="2026-12-02"><b>12/02</b><span>周三</span></time>
+      <div class="ev"><b>北京怀柔 AI OPC 支持措施 · 意见截止</b><em><span class="typechip">意见截止</span>区级 AI 创新主体支持政策</em></div>
+      <a href="https://www.bjhr.gov.cn/zwgk/jcygk/202611/t20261103_4930279.html" target="_blank" rel="noopener noreferrer" aria-label="原文">↗</a>
+    </li>
+<li>
+      <time datetime="2026-12-11"><b>12/11</b><span>周五</span></time>
+      <div class="ev"><b>工业智能体成熟度模型国标 · 公示截止</b><em><span class="typechip">公示截止</span>推荐性国标，智能体成熟度评估</em></div>
+      <a href="https://std.samr.gov.cn/gb/search/gbDetailed?id=511E143A4E4160FEE06397BE0A0A2642" target="_blank" rel="noopener noreferrer" aria-label="原文">↗</a>
+    </li></ul>
+    </div>
+  </div>
+</section>
+
+  <footer class="foot" id="sources">
+    
+    <p>时间窗口：2026-11-09 至 11-15；标准与日历覆盖近两周及未来 30 天。政策信息以官方口径核对，每条附原文链接；微信公众号本期未覆盖，后续通过 RSS 补充。</p>
+    <p class="feedback-note">点赞只保存在本机；点右上角“导出点赞”，把 JSON 放进 data/feedback/ 后可汇总。</p>
+    <p class="gen">AI 前沿周报 · 第 1 期 · 生成于 2026-11-17 14:40</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var btn=document.getElementById('themeBtn');
+  function sync(){btn.textContent=root.dataset.theme==='dark'?'☀':'☾';btn.setAttribute('aria-label',root.dataset.theme==='dark'?'切换到浅色':'切换到深色');}
+  sync();
+  btn.addEventListener('click',function(){
+    var next=root.dataset.theme==='dark'?'light':'dark';
+    root.dataset.theme=next;
+    try{localStorage.setItem('aiwr-theme',next)}catch(e){}
+    sync();
+  });
+  var p=document.getElementById('printBtn');
+  if(p)p.addEventListener('click',function(){window.print()});
+
+  var ISSUE="2026-11-09";
+  var LIKE_KEY='ai-weekly-likes-'+ISSUE;
+  var likeState={};
+  try{likeState=JSON.parse(localStorage.getItem(LIKE_KEY)||'{}')}catch(e){}
+  var likeBtns=[].slice.call(document.querySelectorAll('.likebtn'));
+  function syncLikes(){
+    likeBtns.forEach(function(b){
+      var on=!!likeState[b.getAttribute('data-id')];
+      b.classList.toggle('liked',on);
+      b.setAttribute('aria-pressed',on?'true':'false');
+      var h=b.querySelector('.heart');if(h)h.textContent=on?'♥':'♡';
+      var c=b.querySelector('.likecount');if(c)c.textContent=on?'1':'0';
+    });
+  }
+  likeBtns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var id=b.getAttribute('data-id');
+      if(likeState[id])delete likeState[id];else likeState[id]=1;
+      try{localStorage.setItem(LIKE_KEY,JSON.stringify(likeState))}catch(e){}
+      syncLikes();
+    });
+  });
+  syncLikes();
+  var ex=document.getElementById('likeExport');
+  if(ex)ex.addEventListener('click',function(){
+    var payload={issue:ISSUE,exportedAt:new Date().toISOString(),likes:Object.keys(likeState)};
+    var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='feedback-'+ISSUE+'.json';
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},100);
+  });
+
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('on')});
+          var a=map[en.target.id];if(a)a.classList.add('on');
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    document.querySelectorAll('section[id]').forEach(function(el){obs.observe(el);});
+  }
+})();
+</script>
+</body>
+</html>
